@@ -40,6 +40,18 @@ class ToySeeder extends Seeder
                 'price' => 22.00,
                 'image' => 'toys/musical_piano.jpg',
             ],
+                        [
+                'name' => 'Mashina',
+                'description' => 'Bolalar uchun mashina.',
+                'price' => 38.00,
+                'image' => 'toys/car.jpg',
+            ],
+                        [
+                'name' => 'Qo\'g\'irchoq',
+                'description' => 'Bolalar uchun qo\'g\'irchoq.',
+                'price' => 35.00,
+                'image' => 'toys/doll.jpg',
+            ],
         ];
 
         foreach ($toys as $toy) {
