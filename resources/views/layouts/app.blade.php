@@ -18,15 +18,16 @@
     <div class="container">
         <a class="navbar-brand" href="{{ route('home') }}">O'yinchoqlar Do'koni</a>
         <div class="navbar-nav">
+            <a class="nav-link text-white" href="{{ route('toys.index') }}">O'yinchoqlar</a>
+            <a class="nav-link text-white" href="{{ route('cart.index') }}">Korzinka</a>
             @auth
-                <a class="nav-link text-white" href="{{ route('admin.toys.index') }}">O'yinchoqlar</a>
+                <a class="nav-link text-white" href="{{ route('admin.toys.index') }}">Admin O'yinchoqlar</a>
                 <a class="nav-link text-white" href="{{ route('admin.orders.index') }}">Buyurtmalar</a>
                 <form method="POST" action="{{ route('logout') }}" style="display:inline;">
                     @csrf
                     <button type="submit" class="nav-link btn btn-link text-white">Chiqish</button>
                 </form>
             @endauth
-            {{-- "Kirish" va "Ro'yxatdan o'tish" havolalari olib tashlandi --}}
         </div>
     </div>
 </nav>

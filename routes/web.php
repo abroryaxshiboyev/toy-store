@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ToyController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\Admin\ToyController as AdminToyController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use Illuminate\Support\Facades\Route;
@@ -10,9 +11,13 @@ use Illuminate\Support\Facades\Auth;
 Route::get('/', [ToyController::class, 'index'])->name('home');
 Route::get('/toys', [ToyController::class, 'index'])->name('toys.index');
 Route::get('/toys/{toy}', [ToyController::class, 'show'])->name('toys.show');
+
+// Korzinka marshrutlari
+Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
 Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
 
-// /admin marshruti
 Route::get('/admin', function () {
     if (Auth::check()) {
         return redirect()->route('admin.toys.index');

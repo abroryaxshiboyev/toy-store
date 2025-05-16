@@ -9,26 +9,31 @@ use Illuminate\Http\RedirectResponse;
 
 class OrderController extends Controller
 {
-    public function store(Request $request): RedirectResponse
-    {
-        $validated = $request->validate([
-            'toy_id' => 'required|exists:toys,id',
-            'customer_name' => 'required|string|max:255',
-            'customer_phone' => 'required|regex:/^\d{9}$/',
-            'quantity' => 'required|integer|min:1',
-        ]);
+public function store(Request $request): RedirectResponse
+{
+    $validated = $request->validate([
+        'customer_name' => 'required|string|max:255',
+        'customer_phone' => 'required|regex:/^\d{9}$/',
+        'items' => 'required|array',
+        'items.*.toy_id' => 'required|exists:toys,id',
+        'items.*.quantity' => 'required|integer|min:1',
+    ]);
 
-        $toy = Toy::findOrFail($validated['toy_id']);
-        $totalPrice = $toy->price * $validated['quantity'];
+    foreach ($validated['items'] as $item) {
+        $toy = Toy::findOrFail($item['toy_id']);
+        $totalPrice = $toy->price * $item['quantity'];
 
         Order::create([
-            'toy_id' => $validated['toy_id'],
+            'toy_id' => $item['toy_id'],
             'customer_name' => $validated['customer_name'],
-            'customer_phone' => '+998' . $validated['customer_phone'], // +998 qo'shish
-            'quantity' => $validated['quantity'],
+            'customer_phone' => '+998' . $validated['customer_phone'],
+            'quantity' => $item['quantity'],
             'total_price' => $totalPrice,
         ]);
-
-        return redirect()->route('toys.show', $toy->id)->with('success', 'Buyurtma muvaffaqiyatli qabul qilindi!');
     }
+
+    session()->forget('cart');
+
+    return redirect()->route('toys.index')->with('success', 'Buyurtma muvaffaqiyatli qabul qilindi!');
+}
 }
